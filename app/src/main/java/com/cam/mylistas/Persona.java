@@ -1,8 +1,9 @@
 package com.cam.mylistas;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Persona {
+public class Persona implements Serializable {
     private String nombre;
     private String fechaNacimiento;
     private String sexo;

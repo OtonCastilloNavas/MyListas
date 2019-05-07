@@ -9,11 +9,21 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class RvAdapter extends RecyclerView.Adapter<RvAdapter.PersonaHolder> {
+public class RvAdapter extends RecyclerView.Adapter<RvAdapter.PersonaHolder>
+{
     private List<Persona> personaList;
+    private final OnItemClickListener onItemClickListener;
 
-    public RvAdapter(List<Persona> personaList) {
+
+    public  interface OnItemClickListener
+    {
+        void onItemClick(int position);
+    }
+
+    public RvAdapter(List<Persona> personaList, OnItemClickListener onItemClickListener) {
+
         this.personaList = personaList;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -21,6 +31,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.PersonaHolder> {
     public PersonaHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater= LayoutInflater.from(viewGroup.getContext());
         View view= inflater.inflate(R.layout.item_persona,viewGroup,false);
+
         PersonaHolder personaHolder = new PersonaHolder(view);
         return personaHolder;
     }
@@ -40,7 +51,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.PersonaHolder> {
     }
 
 
-    public class PersonaHolder extends RecyclerView.ViewHolder {
+    public class PersonaHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView tvNombre;
         public TextView tvFechaNac;
         public TextView tvSexo;
@@ -48,11 +59,17 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.PersonaHolder> {
 
         public PersonaHolder(@NonNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             this.tvNombre = itemView.findViewById(R.id.tvNombre);
             this.tvFechaNac = itemView.findViewById(R.id.tvFechaNac);
             this.tvSexo = itemView.findViewById(R.id.tvSexo);
             this.tvDescripcion = itemView.findViewById(R.id.tvDescripcion);
 
+        }
+
+        @Override
+        public void onClick(View v) {
+            onItemClickListener.onItemClick(getAdapterPosition());
         }
     }
 }
